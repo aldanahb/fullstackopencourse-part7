@@ -1,6 +1,10 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
+import UserContext from '../UserContext'
 
-const Blog = ({ blog, handleLike, removeBlog, loggedUser }) => {
+const Blog = ({ blog, handleLike, removeBlog }) => {
+
+  const [loggedUser] = useContext(UserContext)
+
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,

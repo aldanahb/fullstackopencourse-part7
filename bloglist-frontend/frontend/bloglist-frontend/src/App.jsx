@@ -7,15 +7,16 @@ import Togglable from './components/Togglable'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import Notification from './components/Notification'
 import NotificationContext from './NotificationContext'
+import UserContext from './UserContext'
 import { useContext } from 'react'
 
 const App = () => {
-  const [user, setUser] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const blogFormRef = useRef()
 
   const [, notificationDispatch] = useContext(NotificationContext)
+  const [user, userDispatch] = useContext(UserContext)
 
   const queryClient = useQueryClient()
 
@@ -60,10 +61,10 @@ const App = () => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      setUser(user)
+      userDispatch({ payload: user, type: 'SET_USER' })
       blogService.setToken(user.token)
     }
-  }, [])
+  }, [userDispatch])
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -75,9 +76,10 @@ const App = () => {
         JSON.stringify(userLogin),
       )
       blogService.setToken(userLogin.token)
-      setUser(userLogin)
+      userDispatch({ payload: userLogin, type: 'SET_USER' })
       setUsername('')
       setPassword('')
+
     } catch {
       notificationDispatch({
         payload: { content: 'Wrong username or password', type: 'error' },
@@ -121,7 +123,8 @@ const App = () => {
         <button
           onClick={() => {
             window.localStorage.removeItem('loggedBlogAppUser')
-            setUser(null)
+            blogService.setToken(null)
+            userDispatch({ type: 'CLEAR_USER' })
           }}
         >
           logout
@@ -147,6 +150,7 @@ const App = () => {
       setTimeout(() => {
         notificationDispatch({ type: 'CLEAR_NOTIFICATION' })
       }, 5000)
+
     } catch {
       notificationDispatch({
         payload: {
@@ -230,7 +234,6 @@ const App = () => {
             blog={blog}
             handleLike={handleLike}
             removeBlog={removeBlog}
-            loggedUser={user}
           />
         ))}
     </div>
