@@ -2,7 +2,6 @@ import { useState, useContext } from 'react'
 import UserContext from '../UserContext'
 
 const Blog = ({ blog, handleLike, removeBlog }) => {
-
   const [loggedUser] = useContext(UserContext)
 
   const blogStyle = {

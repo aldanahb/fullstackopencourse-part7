@@ -3,7 +3,7 @@ import { createContext, useReducer } from 'react'
 const userReducer = (state, action) => {
   switch (action.type) {
     case 'SET_USER':
-      return action.payload 
+      return action.payload
     case 'CLEAR_USER':
       return null
     default:

@@ -79,7 +79,6 @@ const App = () => {
       userDispatch({ payload: userLogin, type: 'SET_USER' })
       setUsername('')
       setPassword('')
-
     } catch {
       notificationDispatch({
         payload: { content: 'Wrong username or password', type: 'error' },
@@ -150,7 +149,6 @@ const App = () => {
       setTimeout(() => {
         notificationDispatch({ type: 'CLEAR_NOTIFICATION' })
       }, 5000)
-
     } catch {
       notificationDispatch({
         payload: {
